@@ -1,0 +1,26 @@
+name: Exécution automatique de app.py
+
+on:
+  schedule:
+    - cron: "*/1 * * * *"  # exécution toutes les 1 minute
+  workflow_dispatch:        # permet de le lancer manuellement depuis GitHub
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@v3
+
+      - name: Installation de Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Installation des dépendances
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Exécution du script
+        run: python app.py
