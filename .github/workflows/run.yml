@@ -2,7 +2,7 @@ name: Exécution automatique de app.py
 
 on:
   schedule:
-    - cron: "47 * * * *" 
+    - cron: "47 * * * *"
   workflow_dispatch:
 
 jobs:
