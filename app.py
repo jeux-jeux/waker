@@ -26,6 +26,7 @@ resp = requests.post(URL, json={"cle": CLE}, timeout=5 )
 resp.raise_for_status()
 j = resp.json()
 awake = j.get("awake")
+port = j.get("port_wake")
 
 def wbs_security():
     x = 10
@@ -94,3 +95,6 @@ def wake():
     
     
     return jsonify({"message": "ok"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(port))
