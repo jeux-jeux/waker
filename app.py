@@ -28,6 +28,7 @@ j = resp.json()
 awake = j.get("awake")
 
 def wbs_security():
+    x = 10
     
 
 def check_health(proxy):
