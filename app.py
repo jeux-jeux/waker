@@ -7,6 +7,7 @@ import logging
 import time
 import asyncio
 import websockets
+import ast
 
 
 app = Flask(__name__)
@@ -27,6 +28,7 @@ resp.raise_for_status()
 j = resp.json()
 wbs = j.get("cloudlink_url")
 awake = j.get("awake")
+awake = ast.literal_eval(awake)
 port = j.get("port_wake")
 
 def wbs_security():
