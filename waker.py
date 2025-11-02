@@ -6,8 +6,8 @@ import requests
 
 app = Flask(__name__)
  
-CLE = os.environ.get('CLE_ULTRA')
-URL = os.environ.get('URL')
+CLE = os.getenv('CLE_ULTRA')
+URL = os.getenv('URL')
 resp = requests.post(URL, json={"cle": CLE}, timeout=5 )
 resp.raise_for_status()
 j = resp.json()
