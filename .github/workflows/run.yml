@@ -24,3 +24,6 @@ jobs:
 
       - name: Exécution du script
         run: python waker.py
+        env:
+          CLE_ULTRA: ${{ secrets.CLE_ULTRA }}  # secret GitHub
+          URL: ${{ vars.URL }}                 # variable GitHub normale
