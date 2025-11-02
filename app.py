@@ -15,7 +15,7 @@ app.logger.setLevel(logging.DEBUG)
 
 CLE = os.environ.get('CLE')
 URL = os.environ.get('URL')
-
+message = None
 data_cache = {
     "manager":0, 
     "cloudlink":0, 
@@ -25,11 +25,11 @@ data_cache = {
 
 resp = requests.post(URL, json={"cle": CLE}, timeout=5 )
 resp.raise_for_status()
-j = resp.json()
-wbs = j.get("cloudlink_url")
-awake = j.get("awake")
+a = resp.json()
+wbs = a.get("cloudlink_url")
+awake = a.get("awake")
 awake = ast.literal_eval(awake)
-port = j.get("port_wake")
+port = a.get("port_wake")
 
 def wbs_security():
     x = 10
@@ -37,7 +37,7 @@ def wbs_security():
 
 def check_health(proxy):
     if awake[proxy] == "yes":
-        url = j[proxy + "_url"]
+        url = a[proxy + "_url"]
         
         if not proxy == "cloudlink":
             resp = requests.post(url, json={"cle": CLE}, timeout=3 )
