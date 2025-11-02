@@ -2,12 +2,15 @@ name: Exécution automatique de app.py
 
 on:
   schedule:
-    - cron: "*/1 * * * *"  # exécution toutes les 1 minute
-  workflow_dispatch:        # permet de le lancer manuellement depuis GitHub
+    - cron: "*/5 * * * *"  # toutes les 5 minutes (minimum autorisé)
+  workflow_dispatch:
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    env:
+      CLE_ULTRA: ${{ secrets.CLE_ULTRA }}  # secret GitHub (Settings -> Secrets and variables -> Actions -> Secrets)
+      URL: ${{ vars.URL }}                 # variable GitHub normale (Settings -> Secrets and variables -> Actions -> Variables)
 
     steps:
       - name: Récupération du code
@@ -22,8 +25,18 @@ jobs:
         run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      - name: Vérifier la présence des variables (ne révèle pas les valeurs)
+        run: |
+          python - <<'PY'
+          import os, sys
+          if not os.getenv('CLE_ULTRA'):
+              print('ERREUR: CLE_ULTRA manquante')
+              sys.exit(1)
+          if not os.getenv('URL'):
+              print('ERREUR: URL manquante')
+              sys.exit(1)
+          print('Variables trouvées — continuation.')
+          PY
+
       - name: Exécution du script
         run: python waker.py
-        env:
-          CLE_ULTRA: ${{ secrets.CLE_ULTRA }}  # secret GitHub
-          URL: ${{ vars.URL }}                 # variable GitHub normale
