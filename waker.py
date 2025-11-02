@@ -3,6 +3,7 @@ from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 import requests
+import time
 
 app = Flask(__name__)
  
@@ -12,4 +13,8 @@ resp = requests.post(URL, json={"cle": CLE}, timeout=5 )
 resp.raise_for_status()
 j = resp.json()
 wake = j.get("awake_url")
-resp = requests.post(wake, json={"cle": CLE}, timeout=5 )
+for i in range (59):
+    now = int(time.time)
+    resp = requests.post(wake, json={"cle": CLE}, timeout=5 )
+    while int(time.time()) < now+60:
+        time.sleep(1)
