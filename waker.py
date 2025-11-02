@@ -9,7 +9,7 @@ import requests
 app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG)
 
-CLE = os.environ.get('CLE')
+CLE = os.environ.get('CLE_ULTRA')
 URL = os.environ.get('URL')
 
 
