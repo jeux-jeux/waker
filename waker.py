@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import requests
 
 app = Flask(__name__)
-
+ 
 CLE = os.environ.get('CLE_ULTRA')
 URL = os.environ.get('URL')
 resp = requests.post(URL, json={"cle": CLE}, timeout=5 )
