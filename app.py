@@ -25,6 +25,7 @@ data_cache = {
 resp = requests.post(URL, json={"cle": CLE}, timeout=5 )
 resp.raise_for_status()
 j = resp.json()
+wbs = j.get("cloudlink_url")
 awake = j.get("awake")
 port = j.get("port_wake")
 
@@ -44,7 +45,6 @@ def check_health(proxy):
         
         else:
             async def test_connexion():
-                uri = "wss://exemple.com/socket"
                 headers = {
                     "cle": CLE,
                     "User-Agent": "Waker"
