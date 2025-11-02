@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 import requests
 import logging
 import time
+import asyncio
+import websockets
+
 
 app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG)
@@ -24,14 +27,38 @@ resp.raise_for_status()
 j = resp.json()
 awake = j.get("awake")
 
+def wbs_security()
+
 def check_health(proxy):
     if awake[proxy] == "yes":
         url = j[proxy + "_url"]
-        resp = requests.post(url, json={"cle": CLE}, timeout=4 )
+        
+        if not proxy == "cloudlink":
+            resp = requests.post(url, json={"cle": CLE}, timeout=3 )
+            j = resp.json()
             if not j["status"] or j["status"] == "ok":
-                if data_cache[proxy] < 3:
-                    resp = requests.post(j["ntfy_url"], json={"cle": CLE}, timeout=5 )                    
-                
+                message = f"Une erreur a été détectée au proxy {proxy}. Voici l'erreur repérée par ton serveur : {resp}."
+        
+        else:
+            async def test_connexion():
+                uri = "wss://exemple.com/socket"
+                headers = {
+                    "cle": CLE,
+                    "User-Agent": "Waker"
+                }
+                try:
+                    async with websockets.connect(uri, extra_headers=headers) as ws:
+                        # On se déconnecte immédiatement après la connexion
+                        await ws.close()
+                except Exception as e:
+                    message = "Une erreur a été détectée au serveur Cloudlink. Ton waker a essayé de s'y sonnecter mais n'y est pas parvenu"
+            asyncio.run(test_connexion())
+
+        
+        if data_cache[proxy] <= 3 and message:
+            resp = requests.post(ntfy_url + "-waker", data=message, headers={"Content-Type": "text/plain"}, timeout=3 )
+            data_cache[proxy] += 1
+            
 @app.route("/", methods=["POST"])
 def wake():
     data = request.get_json(force=True, silent=True) or {}
@@ -43,5 +70,11 @@ def wake():
         access = x.get("access")
     if access == "false" or not cle_received:
         return jsonify({"status": "error", "message": "clé invalide"})
+    check_health("manager")
+    check_health("firebase")
+    check_health("message")
+    check_health("cloudlink")
 
-    
+    if awake["wbs_security"] == "yes":
+        wbs_security()
+    return jsonify({"message": "ok"})
