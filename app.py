@@ -27,7 +27,8 @@ resp.raise_for_status()
 j = resp.json()
 awake = j.get("awake")
 
-def wbs_security()
+def wbs_security():
+    
 
 def check_health(proxy):
     if awake[proxy] == "yes":
@@ -58,9 +59,18 @@ def check_health(proxy):
         if data_cache[proxy] <= 3 and message:
             resp = requests.post(ntfy_url + "-waker", data=message, headers={"Content-Type": "text/plain"}, timeout=3 )
             data_cache[proxy] += 1
-            
+
+def wake_server():
+    check_health("manager")
+    check_health("firebase")
+    check_health("message")
+    check_health("cloudlink")
+    if awake["wbs_security"] == "yes":
+        wbs_security()
+        
 @app.route("/", methods=["POST"])
 def wake():
+    depart = int(time.time())
     data = request.get_json(force=True, silent=True) or {}
     cle_received = data.get('cle')
     if cle_received:
@@ -70,11 +80,16 @@ def wake():
         access = x.get("access")
     if access == "false" or not cle_received:
         return jsonify({"status": "error", "message": "clé invalide"})
-    check_health("manager")
-    check_health("firebase")
-    check_health("message")
-    check_health("cloudlink")
 
-    if awake["wbs_security"] == "yes":
-        wbs_security()
+    wake_server()
+    
+    while int(time.time) < depart + 15:
+        time.sleep(1)
+    wake_server()
+
+    while int(time.time) < depart + 30:
+        time.sleep(1)
+    wake_server()
+    
+    
     return jsonify({"message": "ok"})
