@@ -16,7 +16,7 @@ wake = j.get("awake_url")
 while True:
     try:
         now = int(time.time())
-        resp = requests.post(wake, json={"cle": CLE}, timeout=5 )
+        resp = requests.post(wake, json={"cle": CLE}, timeout=40 )
     finally:
         x = 10
     while int(time.time()) < now+60:
