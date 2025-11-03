@@ -30,6 +30,7 @@ wbs = a.get("cloudlink_url")
 awake = a.get("awake")
 awake = ast.literal_eval(awake)
 port = a.get("port_wake")
+ntfy_url = a.get("ntfy_url")
 
 def wbs_security():
     x = 10
