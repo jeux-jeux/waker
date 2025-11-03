@@ -15,7 +15,7 @@ app.logger.setLevel(logging.DEBUG)
 
 CLE = os.environ.get('CLE')
 URL = os.environ.get('URL')
-message = None
+
 data_cache = {
     "manager":0, 
     "cloudlink":0, 
@@ -37,6 +37,7 @@ def wbs_security():
     
 
 def check_health(proxy):
+    message = None
     if awake[proxy] == "yes":
         url = a[proxy + "_url"]
         
