@@ -40,9 +40,10 @@ def check_health(proxy):
         url = a[proxy + "_url"]
         
         if not proxy == "cloudlink":
-            resp = requests.post(url, json={"cle": CLE}, timeout=3 )
-            j = resp.json()
-            if not j["status"] or j["status"] == "ok":
+            try:
+                resp = requests.post(url, json={"cle": CLE}, timeout=3 )
+                j = resp.json()
+            except ValueError:
                 message = f"Une erreur a été détectée au proxy {proxy}. Voici l'erreur repérée par ton serveur : {resp}."
         
         else:
@@ -52,7 +53,7 @@ def check_health(proxy):
                     "User-Agent": "Waker"
                 }
                 try:
-                    async with websockets.connect(uri, extra_headers=headers) as ws:
+                    async with websockets.connect(url, extra_headers=headers) as ws:
                         # On se déconnecte immédiatement après la connexion
                         await ws.close()
                 except Exception as e:
