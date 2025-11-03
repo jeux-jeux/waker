@@ -14,7 +14,10 @@ resp.raise_for_status()
 j = resp.json()
 wake = j.get("awake_url")
 while True:
-    now = int(time.time())
-    resp = requests.post(wake, json={"cle": CLE}, timeout=5 )
+    try:
+        now = int(time.time())
+        resp = requests.post(wake, json={"cle": CLE}, timeout=5 )
+    finally:
+        x = 10
     while int(time.time()) < now+60:
         time.sleep(1)
