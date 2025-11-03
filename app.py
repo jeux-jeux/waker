@@ -90,11 +90,11 @@ def wake():
 
     wake_server()
     
-    while int(time.time) < depart + 15:
+    while int(time.time()) < depart + 15:
         time.sleep(1)
     wake_server()
 
-    while int(time.time) < depart + 30:
+    while int(time.time()) < depart + 30:
         time.sleep(1)
     wake_server()
     
