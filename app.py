@@ -11,7 +11,7 @@ import ast
 
 
 app = Flask(__name__)
-app.logger.setLevel(logging.DEBUG)
+
 
 TOKEN = os.environ.get('GITHUB_TOKEN')
 CLE = os.environ.get('CLE')
@@ -76,7 +76,7 @@ def wake_server():
     if awake["wbs_security"] == "yes":
         wbs_security()
         
-for i in range(180):
+for i in range(60):
     depart = int(time.time())
     data = request.get_json(force=True, silent=True) or {}
     cle_received = data.get('cle')
@@ -97,9 +97,25 @@ for i in range(180):
     while int(time.time()) < depart + 30:
         time.sleep(1)
     wake_server()
-    
-    
-    return jsonify({"message": "ok"})
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(port))
+import os
+import requests
+
+owner = "TON_NOM_D_UTILISATEUR"
+repo = "TON_REPOSITORY"
+workflow_file = "deploy.yml"
+
+# Récupération du token temporaire fourni par GitHub Actions
+github_token = os.environ.get("GITHUB_TOKEN")
+
+url = f"https://api.github.com/repos/{owner}/{repo}/actions/workflows/{workflow_file}/dispatches"
+data = {"ref": "main"}
+
+headers = {
+    "Accept": "application/vnd.github+json",
+    "Authorization": f"Bearer {github_token}",
+    "X-GitHub-Api-Version": "2022-11-28"
+}
+
+resp = requests.post(url, headers=headers, json=data)
+print(resp.status_code, resp.text
