@@ -101,9 +101,9 @@ for i in range(60):
 import os
 import requests
 
-owner = "TON_NOM_D_UTILISATEUR"
-repo = "TON_REPOSITORY"
-workflow_file = "deploy.yml"
+owner = "jeux-jeux"
+repo = "waker"
+workflow_file = "run.yml"
 
 # Récupération du token temporaire fourni par GitHub Actions
 github_token = os.environ.get("GITHUB_TOKEN")
@@ -118,4 +118,4 @@ headers = {
 }
 
 resp = requests.post(url, headers=headers, json=data)
-print(resp.status_code, resp.text
+print(resp.status_code, resp.text)
