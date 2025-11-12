@@ -13,6 +13,7 @@ import ast
 app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG)
 
+TOKEN = os.environ.get('GITHUB_TOKEN')
 CLE = os.environ.get('CLE')
 URL = os.environ.get('URL')
 
@@ -75,8 +76,7 @@ def wake_server():
     if awake["wbs_security"] == "yes":
         wbs_security()
         
-@app.route("/", methods=["POST"])
-def wake():
+for i in range(180):
     depart = int(time.time())
     data = request.get_json(force=True, silent=True) or {}
     cle_received = data.get('cle')
