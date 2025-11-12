@@ -78,15 +78,6 @@ def wake_server():
         
 for i in range(60):
     depart = int(time.time())
-    data = request.get_json(force=True, silent=True) or {}
-    cle_received = data.get('cle')
-    if cle_received:
-        resp = requests.post(f"{URL}cle-ultra", json={"cle": cle_received}, timeout=5 )
-        resp.raise_for_status()
-        x = resp.json()
-        access = x.get("access")
-    if access == "false" or not cle_received:
-        return jsonify({"status": "error", "message": "clé invalide"})
 
     wake_server()
     
