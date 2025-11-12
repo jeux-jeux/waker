@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 
 TOKEN = os.environ.get('GITHUB_TOKEN')
-CLE = os.environ.get('CLE')
+CLE = os.environ.get('CLE_ULTRA')
 URL = os.environ.get('URL')
 
 data_cache = {
