@@ -1,12 +1,16 @@
-name: Exécution automatique de app.py
+name: Exécution manuelle de app.py
 
 on:
   workflow_dispatch:
 
+permissions:
+  actions: write
+  contents: read
+
 jobs:
   run-script:
     runs-on: ubuntu-latest
-    environment: variable   # ⬅️ ici ton environment personnalisé !
+    environment: variable
 
     steps:
       - uses: actions/checkout@v3
@@ -21,7 +25,8 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Exécution du script
-        run: python app.py
+        run: python waker.py
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # ✅ jeton auto fourni par GitHub
           CLE_ULTRA: ${{ secrets.CLE_ULTRA }}
           URL: ${{ vars.URL }}
