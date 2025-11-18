@@ -32,9 +32,9 @@ awake = a.get("awake")
 awake = ast.literal_eval(awake)
 port = a.get("port_wake")
 ntfy_url = a.get("ntfy_url")
-
+manager_url = a.get("")
 def wbs_security():
-    x = 10
+    requests.get(url, headers=headers, json=data)
     
 
 def check_health(proxy):
