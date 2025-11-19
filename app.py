@@ -24,7 +24,7 @@ data_cache = {
     "firebase":0
 }
 
-resp = requests.post(URL, json={"cle": CLE}, timeout=5 )
+resp = requests.post(URL, json={"cle": CLE}, timeout=5)
 resp.raise_for_status()
 a = resp.json()
 wbs = a.get("cloudlink_url")
@@ -32,11 +32,27 @@ awake = a.get("awake")
 awake = ast.literal_eval(awake)
 port = a.get("port_wake")
 ntfy_url = a.get("ntfy_url")
-manager_url = a.get("")
-def wbs_security():
-    requests.get(url, headers=headers, json=data)
-    
+manager_url = a.get("manager_url")
 
+
+def wbs_security():
+    resp = requests.post(f"{manager_url}get/rooms", json={"cle": CLE}, timeout=5)
+    resp.raise_for_status()
+    b = resp.json()
+    rooms = b.get("rooms")
+    
+    users = []
+    
+    for room in rooms:
+        resp = requests.post(f"{manager_url}get/users", json={"cle": CLE, "room": [room]}, timeout=5)
+        resp.raise_for_status()
+        c = resp.json()
+        users_in_room = list(c.get("users", {}).keys())
+        for user in users_in_room:
+            users.append(user)
+            
+    users = list(set(users))
+    
 def check_health(proxy):
     message = None
     if awake[proxy] == "yes":
