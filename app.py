@@ -8,7 +8,7 @@ import time
 import asyncio
 import websockets
 import ast
-
+import random
 
 app = Flask(__name__)
 
@@ -47,11 +47,14 @@ def wbs_security():
         resp = requests.post(f"{manager_url}get/users", json={"cle": CLE, "room": [room]}, timeout=5)
         resp.raise_for_status()
         c = resp.json()
-        users_in_room = list(c.get("users", {}).keys())
+        users_in_room = list(c.get("val", {}).keys())
         for user in users_in_room:
             users.append(user)
             
     users = list(set(users))
+    
+    requests.post(URL, json={"cle": CLE, "token": random.randint(100000, 999999)}, timeout=5)
+    
     
 def check_health(proxy):
     message = None
