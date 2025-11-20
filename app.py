@@ -53,7 +53,17 @@ def wbs_security():
             
     users = list(set(users))
     
-    requests.post(URL, json={"cle": CLE, "token": random.randint(100000, 999999)}, timeout=5)
+    user_server = f"wbs_security{random.randint(100000, 999999)}"
+    
+    requests.post(URL, json={"cle": CLE, "cle_wbs": random.randint(100000, 999999)}, timeout=5)
+    
+    json = {
+        "cle": CLE,
+        "rooms": ,
+        "message": ,
+        "username": user_server
+    }
+    resp = requests.post(f"{manager_url}checking/security", json={"cle": CLE}, timeout=5)
     
     
 def check_health(proxy):
