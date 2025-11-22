@@ -68,12 +68,25 @@ def wbs_security():
     resp.raise_for_status()
     c = resp.json()
     c = c.get("received_messages")
-    
+    c = list(set(c))
     for id in c:
         user_check = id.get("id")
         users.remove(user_check)
         
+    resp = requests.post(f"{manager_url}get/rooms, json={"cle": CLE}, timeout=5)
+    resp.raise_for_status()
+    d = resp.json()
+    rooms = d.get("rooms")
+    all_id = {}
+    for r in rooms:
+        resp = requests.post(f"{manager_url}get/users, json={"cle": CLE, "room": r}, timeout=5)
+        resp.raise_for_status()
+        e = resp.json()
+        all_id[r] = e.get("users")
     
+    for user in users:
+        for cle in all_id:
+            if 
     
 def check_health(proxy):
     message = None
