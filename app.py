@@ -86,7 +86,14 @@ def wbs_security():
     
     for user in users:
         for cle in all_id:
-            if 
+            if user in all_id[cle]:
+                body_json = {
+                    "cle": CLE,
+                    "room": cle,
+                    "targets": [user]
+                }
+        
+                requests.post(f"{manager_url}room/deleter", json=body_json, timeout=5)
     
 def check_health(proxy):
     message = None
