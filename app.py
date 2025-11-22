@@ -63,7 +63,16 @@ def wbs_security():
         "message": ,
         "username": user_server
     }
+    
     resp = requests.post(f"{manager_url}checking/security", json={"cle": CLE}, timeout=5)
+    resp.raise_for_status()
+    c = resp.json()
+    c = c.get("received_messages")
+    
+    for id in c:
+        user_check = id.get("id")
+        users.remove(user_check)
+        
     
     
 def check_health(proxy):
